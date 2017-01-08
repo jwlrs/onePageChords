@@ -1,0 +1,26 @@
+[x] FIX METRICS!!
+
+[x] clear guff
+
+[] packaging
+	[x] min js
+	[] min mustache.html
+	[] min css
+	[] jar -> zip
+[] combine required
+
+[x] clean up request data structure
+[x] investigate and implement php protections
+[-] can i post the pdf result to dropbox?
+[-] localstorage/dropbox?
+[x] A4 size
+[x] footer advert
+[] tests
+[x] add code for "This is[Am] a song [G] whatever"
+
+[x] Figure out how to get rid of unecessary blank lines (e.g. chords loaded 2012/05/22
+
+[] "OnePageChords" footnote not printing
+
+[-] add key changing code
+[x] fix smart quotes: http://tabs.ultimate-guitar.com/a/arcade_fire/intervention_ver3_crd.htm

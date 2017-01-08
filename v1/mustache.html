@@ -1,0 +1,21 @@
+<mustache id="Lines"><p>&nbsp;</p>
+	{{#lines}}
+<p id="Line_{{index}}" class="{{#inHeading}} inHeading{{/inHeading}} {{#inPrint}} inPrint{{/inPrint}} {{^inPrint}} noPrint{{/inPrint}}" onclick="op.toggleInPrint(this)" title="Click to {{#inPrint}}hide {{/inPrint}}{{^inPrint}}show {{/inPrint}} this line in the final PDF">{{{substituteText}}}&nbsp;</p>
+{{/lines}}
+<p>&nbsp;</p>
+</mustache>
+
+<mustache id="SpaceLine">&#x27A5;</mustache>
+
+<mustache id="OutputInitialMessage">
+	<p class="message">...over here you'll see which lines will end up in your PDF, with unprinted lines shown here in gray.  Note that &#x27A5; means a blank line.  You can click individual lines to toggle them on or off.</p>
+	<p class="message">When you like what you see, press "Create PDF" &#x21E3;</p>
+</mustache>
+
+<mustache id="PreviousLinks">
+	<li>&nbsp;</li>
+	{{#links}}
+		<li><a href="javascript:op.loadChords('{{.}}')">{{{.}}}</a><button class="remove" onclick="op.removeChords('{{.}}',this);" title="remove {{.}} from your history">remove</button></li>
+	{{/links}}
+	<li class="note" title="(stored in localStorage)">note: these are stored locally in your browser</li>
+</mustache>
