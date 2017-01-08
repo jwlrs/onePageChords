@@ -339,7 +339,6 @@ var op = {//chord printer
 
 
 
-//{ fontSize:fntsiz, lines:outlin, x1: op.LEFT_MARGIN, twoColumn: usetwo, pageSize: pagsiz, fileName: filnam }
         var docDefinition = {
             content: [
                 {
@@ -418,6 +417,7 @@ var op = {//chord printer
             }
         };
         pdfMake.createPdf(docDefinition).open();
+
         /*outobj = { fontSize:fntsiz, lines:outlin, x1: op.LEFT_MARGIN, twoColumn: usetwo, pageSize: pagsiz, fileName: filnam };
         if(usetwo) {
             outobj.x2 = (pagwid+op.COLUMN_MARGIN)/2;
