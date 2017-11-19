@@ -65,10 +65,10 @@ var op = {//chord printer
         //basic setup
         var textAll, textLines, lineObjects, notePatterns, noteRegexes, spaceRegex, 
           noteMatches, noteMatchCount, spaceMatches, 
-          leadSpaces, textLength, lstchr, inPrint, dontPrint, line, 
+          leadSpaces, textLength, lastChar, inPrint, dontPrint, line, 
           notesLast, notesStart, notesEnd, stop, 
           prevBlank, orgPrevBlank, bi, li, mi, ni, 
-          printCount, totalLines, shownCount;
+          printCount, titleLine, shownCount;
           
         textAll = op._.i$.val();
         if(textAll === "") {
@@ -101,14 +101,16 @@ var op = {//chord printer
             if(textLines[li].length == leadSpaces) { textLines[li] = ""; }
             textLength = textLines[li].length;
             if(textLength === 0 && lineObjects.length > 0 && lineObjects[lineObjects.length - 1].length === 0) continue; //just skip multiple blank lines
-            lstchr = textLines[li].charAt(textLines[li].length - 1);
-            inPrint = ( lstchr == "+" );
-            dontPrint = ( lstchr == "-" );
+            lastChar = textLines[li].charAt(textLines[li].length - 1);
+            inPrint = ( lastChar == "+" );
+            dontPrint = ( lastChar == "-" );
             line = { 
                 noteHits: noteMatchCount, 
                 text: ( inPrint || dontPrint ? textLines[li].substring(0, textLines[li].length - 1) : textLines[li] || "" ), 
                 length: textLength, 
                 leadSpaces: leadSpaces, 
+                lastChar: lastChar,
+                odp: dontPrint,
                 inPrint: inPrint, 
                 dontPrint: dontPrint, 
                 inHeading: false, 
@@ -124,7 +126,7 @@ var op = {//chord printer
         notesEnd = lineObjects.length - 1;//where notes end
         for(li = 0; li < lineObjects.length; li++) {
             if(notesStart < 0 && notesLast > 0) { //we have no start yet, but current notesLast is set
-                if(lineObjects[li].noteHits > 0 && li-notesLast < 10) {
+                if(lineObjects[li].noteHits > 0 && li - notesLast < 10) {
                     notesStart = notesLast;
                 }
             }
@@ -134,10 +136,10 @@ var op = {//chord printer
             if(lineObjects[li].noteHits > 0) {
                 notesLast = li;
             }
-            if(!lineObjects[li].dontPrint && lineObjects[li].textLow.indexOf("capo") > - 1 && lineObjects[li].length > "capo".length + 1  && lineObjects[li].textLow.indexOf("following the link") < 0) {
+            if(!lineObjects[li].dontPrint && lineObjects[li].textLow.indexOf("capo") > - 1 && lineObjects[li].length > "capo".length + 1 && lineObjects[li].textLow.indexOf("following the link") < 0) {
                 lineObjects[li].inPrint = true;
             }
-            if(!lineObjects[li].dontPrint && lineObjects[li].textLow.indexOf("tuning") > - 1 && lineObjects[li].length > "tuning".length+5 ) {
+            if(!lineObjects[li].dontPrint && lineObjects[li].textLow.indexOf("tuning") > - 1 && lineObjects[li].length > "tuning".length + 5 ) {
                 lineObjects[li].inPrint = true;
             }
         }
@@ -145,7 +147,7 @@ var op = {//chord printer
         //find first line with "by" before proper inPrint and add it as a candidate title line
         for(li = 0; li < notesStart; li++) {
             if(!lineObjects[li].dontPrint && lineObjects[li].textLow.indexOf(" by ") > 3 && 
-              lineObjects[li].textLow.indexOf(" by ") < lineObjects[li].text.length-7 && 
+              lineObjects[li].textLow.indexOf(" by ") < lineObjects[li].text.length - 7 && 
               lineObjects[li].textLow.indexOf("browse by ") < 0 && 
               lineObjects[li].textLow.indexOf("following the link above") < 0) {
                 lineObjects[li].inPrint = true;
@@ -177,14 +179,19 @@ var op = {//chord printer
         }
 
         //figure out title            
-        totalLines = 0;
+        titleLine = 0;
         for(li = 0; li < lineObjects.length; li++) {
             if(lineObjects[li].inPrint) { 
-                totalLines = li; 
+                titleLine = li; 
                 break;
             }
         }
-        lineObjects[totalLines].inHeading = true; 
+        lineObjects[titleLine].inHeading = true; 
+
+        if(lineObjects[titleLine].text.indexOf(', added: ') > -1) { //ultimate guitar boilerplate
+            lineObjects[titleLine].text = lineObjects[titleLine].text.split(', added: ')[0];
+        }
+        
         for(li = 0; li < lineObjects.length; li++) {
             if(!lineObjects[li].inPrint) continue;
             
@@ -228,9 +235,9 @@ var op = {//chord printer
         }
 
         for(li = 0; li < lineObjects.length - 1; li++) {
-            lineObjects[li].substituteText = ( lineObjects[li].length === 0 || lineObjects[li].length == lineObjects[li].leadSpaces + 1 ? mu.SpaceLine.th({}) : lineObjects[li].text );
+            lineObjects[li].substituteText = ( lineObjects[li].length === 0 || lineObjects[li].length == lineObjects[li].leadSpaces ? mu.SpaceLine.th({}) : lineObjects[li].text );
         }
-            
+
         if(shownCount > 0) { op.enableOutput(); } else { op.disableOutput(); }
         var output = mu.Lines.th({lines: lineObjects});
         $("#Out").html(output);
@@ -333,10 +340,10 @@ var op = {//chord printer
         var title = outputLines.shift();
         for(li = 0; li < outputLines.length; li++) {
             if(li < columnLines) {
-                outputLines[li] = { y: li*lineSize+op.TOP_MARGIN, tx: outputLines[li], c: 1 };
+                outputLines[li] = { y: li * lineSize + op.TOP_MARGIN, tx: outputLines[li], c: 1 };
             }
             else {
-                outputLines[li] = { y: (li+offsetTwo-columnLines)*lineSize+op.TOP_MARGIN, tx: outputLines[li], c: 2 };
+                outputLines[li] = { y: (li + offsetTwo-columnLines) * lineSize+op.TOP_MARGIN, tx: outputLines[li], c: 2 };
             }
         }
         fileName = op.getHeading().replace(" by ", "-").replace(/[^-|^\w|^\d]/g, "")+".pdf";
