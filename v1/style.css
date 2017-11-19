@@ -2,9 +2,11 @@
 	box-sizing: border-box;
 }
 
+
 button { 
     cursor: pointer; 
 }
+
 
 html {
     margin: 0px;
@@ -13,6 +15,7 @@ html {
     height: 100%;
     overflow: hidden;
 }
+
 body {
     margin: 0px auto;
     width: 100%;
@@ -22,10 +25,12 @@ body {
     background: #f8f8f8 url(images/paper.png) top left;
     font-family: "Liberation Serif", Georgia, serif;
 }
+
 hgroup {
     display: block;
     height: 50px;
 }
+
 h1 {
     float: left;
     margin: 0px;
@@ -33,6 +38,7 @@ h1 {
     text-shadow: 0px -1px 0px black, 0px 2px 0px white, 1px 1px 0px white, -1px 1px 0px white;
     color: #2266bb;
 }
+
 h2 {
     float: left;
     margin: 17px 0 0 10px;
@@ -40,15 +46,18 @@ h2 {
     font-size: 12px;
     font-weight: normal;
 }
+
 h3 {    
     float: left;
     margin: 15px 0 0 10px;
     padding: 0px;
 }
+
 #OutForm {
     clear: both;
     height: 80%;
 }
+
 #Input {
     float: left;
     padding-left: 15px;
@@ -67,14 +76,18 @@ h3 {
     height: 100%;
     transition: height 100ms;
 }
+
 #Input:-moz-placeholder  {
     padding-top: 13px;
     color: gray;    
 }
+
+
 #Input::-webkit-input-placeholder {
     padding-top: 13px;
     color: gray;    
 }
+
 
 #Submit {
     position: relative;
@@ -95,6 +108,7 @@ h3 {
     width: 222px;
     transition: width 300ms, margin-right 300ms;
 }
+
 #Submit:hover {
     background: #2277ee;
     text-shadow: 0px 1px 1px #012;
@@ -102,12 +116,14 @@ h3 {
     margin-right: 20px;
     transition: width 300ms, margin-right 300ms;
 }
+
 #Submit:disabled { 
     opacity: 0.8; 
     color: #ddd;
     text-shadow: 0px 1px 1px #444;
     background: gray; 
 }
+
 #Submit:disabled:hover {
     text-shadow: 0px 1px 1px #444;
     background: gray;     
@@ -120,6 +136,7 @@ h3 {
 }
 
 
+
 #SizeWrap {
     float: right;
     clear: both;
@@ -129,9 +146,11 @@ h3 {
     font-size: 12px;
 }
 
+
 #SizeWrap.disabled {
     color: #888;
 }
+
 
 #Clear {
     clear: both;
@@ -148,6 +167,7 @@ h3 {
     transition: width 200ms, margin-left 200ms, margin-right 200ms;
 }
 
+
 #Clear:hover {
     background: green;  
     color: white;
@@ -161,6 +181,7 @@ h3 {
     transition: width 200ms, margin-left 200ms, margin-right 200ms;
 }
 
+
 #Save {
     float: left;
     margin-top: -3px;
@@ -173,6 +194,7 @@ h3 {
     font-family: Garamond, serif;
     transition: width 200ms, margin-left 200ms;
 }
+
 #Save:hover {
     background: #077; 
     margin-left: 2px; 
@@ -200,14 +222,17 @@ h3 {
     overflow: auto;
     font-size: 16px;
 }
+
 #Previous li {
     border-bottom: 1px solid #f8f8f8;    
     background: white;
     padding: 10px 10px 10px 20px;  
 }
+
 #Previous li:last-child {
     border-bottom: 0px; 
 }
+
 #Previous li.note {
     color: gray;
     font-size: 12px;
@@ -224,6 +249,7 @@ h3 {
     margin-right: 0px;
     transition: width 200ms, margin-right 200ms;
 }
+
 #Previous button.remove:hover {
     background: red;
     color: white;
@@ -235,6 +261,7 @@ h3 {
     margin-right: -2px;
     transition: width 200ms, margin-right 200ms;
 }
+
 
 #Previous li:first-child {
     position: fixed;
@@ -252,6 +279,7 @@ h3 {
     background: white;
     font-size: 12px;
 }
+
 #Previous li:first-child:hover {
     color: blue;
     text-decoration: underline;
@@ -261,9 +289,11 @@ h3 {
 }
 
 
+
 #Previous.hidden {
     display: none;
 }
+
 
 #Previous.closed {
     height: 0px;
@@ -273,14 +303,17 @@ h3 {
     background: transparent;
 }
 
+
 #Previous.closed li:first-child {
     border-bottom: 0px;
     background: transparent;
     box-shadow: none;
 }
+
 #Previous.closed li:first-child:after {
     content: " ▾";
 }
+
 
 #Out {
     float: left;
@@ -296,11 +329,13 @@ h3 {
     height: 100%;
     transition: height 100ms;
 }
+
 #Out p {
 	margin: 0px;
 	white-space: pre;
     cursor: pointer;
 }
+
 
 #Out .message  {
     padding-top: 13px;
@@ -312,13 +347,16 @@ h3 {
     margin-left: -45px;
 }
 
+
 .inHeading {
 	font-weight: bold; 
 }
+
 .noPrint {
 	color: #bbb;
     text-shadow: 0px 0px 1px #bbb;
 }
+
 
 .togglable.inPrint {
 	color: #33b;

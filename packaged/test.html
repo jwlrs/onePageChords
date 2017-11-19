@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>One Page Chords</title>
+<meta name="description" content="One Page Chords helps you create a single, printable page of chords and lyrics" />
+<meta name="author" content="Joe Larson">
+<link rel="stylesheet" type="text/css" media="all" href="v1/style.css" />
+<link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+</head>
+<body>
+<hgroup>
+    <h1>One Page Chords</h1>
+    <h2>by <a href="https://twitter.com/joelarson4">Joe Larson</a></h2>
+    <h3><a href="https://twitter.com/share" class="twitter-share-button" data-via="joelarson4">Tweet</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script></h3>
+    </hgroup>
+<ul id="Previous" class="closed hidden">
+    <li onclick="op.togglePreviousChords()">your previously printed chords</li>
+    </ul>
+<form id="OutForm" method="Post" action="v1/output.php" target="_new">
+    <textarea id="Input" onkeyup="op.parseText()" placeholder="paste & edit your chords & lyrics here, and..." wrap="off" title="Paste your chords & lyrics here, verify them on the left side."></textarea>
+    <div id="Out"></div>
+    <input type="hidden" name="json" id="OutputJson">
+    </form>    
+<button id="Clear" onclick="op.clear()" title="Click here to clear your chords & lyrics and start over">&#x21BA; start over</button>
+<button id="Save" onclick="op.save()" title="Click here to save your chords & lyrics and start over">&#x29BF; save for later</button>    
+<button id="Submit" onclick="op.prepareAndSubmit()" disabled><img src="v1/images/pdficon.png"> Create PDF &#x219D;</button>
+<div id="SizeWrap" class="disabled">paper size <select id="Size" disabled onchange="op.changeSize()"><option>Letter</option><option>A4</option></select></div>
+<script src="v1/js/pdfmake.js"></script>
+<script src="v1/js/vfs_fonts.js"></script>
+<script data-main="v1/js/opc-required" src="v1/js/require.js"></script>
+<script src="v1/js/opc-required"></script>
+<!--script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-1693197-13']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script-->
+</body>
+</html>
