@@ -2,7 +2,8 @@ var op = {//chord printer
     NOTES:"A, A#, Bb, B, C, C#, Cb, D, D#, Eb, E, F, F#, Gb, G, G#, Ab".split(", "), 
     MODS:", 7, 9, m, dim, aug, +, m7, m9, 7m, 9m".split(", "), 
     BOTTOM_PAD: 60, 
-    DROP_BOILERPLATE: ["©", "to cell phone", "improve your playing", "contact us", "by following the link above"], 
+    DROP_BOILERPLATE: ["©", "to cell phone", "improve your playing", "contact us", "by following the link above"],
+    INTERNAL_BOILERPLATE: ["[verse 1]", "[verse 2]", "[verse 3]", "[verse]", "[intro]"].join(''), 
     LS_PAPER_SIZE: "OnePageChord_PaperSize", 
     LS_STORE_CHORDS: "OnePageChord_Chords:", 
     _: {}, 
@@ -110,7 +111,8 @@ var op = {//chord printer
                 length: textLength, 
                 leadSpaces: leadSpaces, 
                 lastChar: lastChar,
-                odp: dontPrint,
+                originalDontPrint: dontPrint,
+                originalInPrint: inPrint,
                 inPrint: inPrint, 
                 dontPrint: dontPrint, 
                 inHeading: false, 
@@ -136,12 +138,12 @@ var op = {//chord printer
             if(lineObjects[li].noteHits > 0) {
                 notesLast = li;
             }
-            if(!lineObjects[li].dontPrint && lineObjects[li].textLow.indexOf("capo") > - 1 && lineObjects[li].length > "capo".length + 1 && lineObjects[li].textLow.indexOf("following the link") < 0) {
+            if(!lineObjects[li].dontPrint && lineObjects[li].textLow.indexOf("capo") > - 1 && lineObjects[li].textLow.indexOf("following the link") < 0) {
                 lineObjects[li].inPrint = true;
             }
-            if(!lineObjects[li].dontPrint && lineObjects[li].textLow.indexOf("tuning") > - 1 && lineObjects[li].length > "tuning".length + 5 ) {
+            /*if(!lineObjects[li].dontPrint && lineObjects[li].textLow.indexOf("tuning") > - 1 && lineObjects[li].length > "tuning".length + 5 ) {
                 lineObjects[li].inPrint = true;
-            }
+            }*/
         }
 
         //find first line with "by" before proper inPrint and add it as a candidate title line
@@ -149,9 +151,26 @@ var op = {//chord printer
             if(!lineObjects[li].dontPrint && lineObjects[li].textLow.indexOf(" by ") > 3 && 
               lineObjects[li].textLow.indexOf(" by ") < lineObjects[li].text.length - 7 && 
               lineObjects[li].textLow.indexOf("browse by ") < 0 && 
+              lineObjects[li].textLow.indexOf("search songs by chords") < 0 && 
+              lineObjects[li].textLow.indexOf("filter them by genre") < 0 && 
               lineObjects[li].textLow.indexOf("following the link above") < 0) {
                 lineObjects[li].inPrint = true;
                 break;
+            }
+        }
+
+        //special ultimate guitar filter
+        for(li = Math.max(notesStart, 0); li < Math.min(notesEnd, lineObjects.length ); li++) {
+            console.log(lineObjects[li].text + '  ' +  lineObjects[li].text.indexOf('STRUMMING'));
+            if(lineObjects[li].text.indexOf('STRUMMING') > -1) {
+                notesStart = li+1;
+                console.log('strumming, ' + notesStart);
+            }
+        }
+        for(li = Math.max(notesStart, 0); li < Math.min(notesEnd, lineObjects.length ); li++) {
+            if(lineObjects[li].textLow.indexOf('by helping ug you make the world better') > -1 ) {
+                notesEnd = li - 1;
+                console.log('helping ug, ' + notesEnd);
             }
         }
 
@@ -219,9 +238,26 @@ var op = {//chord printer
             if(!lineObjects[li].inPrint) continue;
             shownCount++;
             if(lineObjects[li].length === 0 && prevBlank) { lineObjects[li].inPrint = false; continue; }
-            prevBlank = (lineObjects[li].length === 0);
+            if(lineObjects[li].length === 0) {
+                prevBlank = true;
+                lineObjects[li].inPrint = true;
+            } else {
+                prevBlank = false;
+            }
         }
 
+        /* remove junk like [VERSE 1] */
+        for(li = 0; li < lineObjects.length; li++) {
+            if(!lineObjects[li].inPrint) continue;
+            if(op.INTERNAL_BOILERPLATE.indexOf(lineObjects[li].textLow) > -1 && !lineObjects[li].originalInPrint) {
+                lineObjects[li].inPrint = false; //dont print the [VERSE 1]
+                if(!lineObjects[li].originalDontPrint) {
+                    lineObjects[li - 1].inPrint = true; //but print the blank line before it
+                }
+            }
+        }
+
+        /* this seems to no longer be helpful but leaving here in case...
         prevBlank = false;
         orgPrevBlank = false;
         for(li = 0; li < lineObjects.length - 1; li++) {
@@ -232,10 +268,10 @@ var op = {//chord printer
             if(lineObjects[li + 1].noteHits > 0) continue; //if the next line is notes, don't remove blank line
             if(lineObjects[li + 1].text.indexOf(":") == lineObjects[li + 1].text.length - 1) continue; //don't remove before something like "Chorus:" or "Verse:"
             if(orgPrevBlank) lineObjects[li].inPrint = false;
-        }
+        }*/
 
         for(li = 0; li < lineObjects.length - 1; li++) {
-            lineObjects[li].substituteText = ( lineObjects[li].length === 0 || lineObjects[li].length == lineObjects[li].leadSpaces ? mu.SpaceLine.th({}) : lineObjects[li].text );
+            lineObjects[li].substituteText = ( lineObjects[li].text.trim().length === 0 || lineObjects[li].text.trim().length == lineObjects[li].leadSpaces ? mu.SpaceLine.th({}) : lineObjects[li].text );
         }
 
         if(shownCount > 0) { op.enableOutput(); } else { op.disableOutput(); }

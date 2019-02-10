@@ -1,2 +1,2 @@
 theme: jekyll-theme-minimal
-exclude: packaged/v1/js/node_modules/requirejs-module-build/node_modules/glob/node_modules/minimatch/node_modules/brace-expansion/node_modules/balanced-match/README.md
+exclude: node_modules
